@@ -10,12 +10,12 @@ st.set_page_config(page_title="VIP AI OTC Predictor", page_icon="💎", layout="
 API_KEY = "AQ.Ab8RN6Idmj_Y2q2q4u7ryWAYRr2uIyZALe0Qqe9CdfjgJiAxNw"
 genai.configure(api_key=API_KEY)
 
-# Premium Header Section using Streamlit Native Elements
-st.title("🔱 VIP OTC MARKET SCANNER v3.0")
+# Premium Header Section
+st.title("🔱 VIP OTC MARKET SCANNER v3.5")
 st.subheader("🔥 Premium Candlestick Intelligence & Neural Network Analytics")
 st.markdown("---")
 
-# 3. Sidebar Configuration (VIP Sidebar)
+# 3. Sidebar Configuration
 st.sidebar.title("👑 VIP Control Panel")
 market_type = st.sidebar.selectbox("Select Market", ["Quotex OTC Market", "Pocket Option OTC", "Binary.com OTC", "Live Forex Market"])
 currency_pair = st.sidebar.text_input("Asset / Currency Pair", "USD/JPY (OTC)")
@@ -37,7 +37,6 @@ with col1:
 with col2:
     st.success("⚡ AI PROCESSING HUB")
     if uploaded_file is not None:
-        # Highlighting the Analyze Button to look premium
         if st.button("🚀 ANALYZE NOW (VIP SCAN)", type="primary"):
             progress_bar = st.progress(0)
             status_text = st.empty()
@@ -49,14 +48,17 @@ with col2:
                 status_text.text(f"Scanning Candlestick Volatility... {percent_complete}%")
             
             try:
-                # Optimized VIP Prompt for high accuracy
+                # Fixed Prompt with absolute structure instructions
                 prompt = f"""
                 Act as an Elite Financial Master Trader with 15 years of experience in OTC Binary Options. 
                 Analyze this chart for {currency_pair} on {market_type} with a {timeframe} candle period.
-                Your response must be in strictly ENGLISH and extremely precise.
+                Your response must be in strictly ENGLISH, extremely clear, and bold.
+                
+                CRITICAL INSTRUCTION: You MUST start your response with the NEXT SIGNAL prediction (CALL, PUT, or NEUTRAL) in clear capital letters.
+                
                 Use the following exact template for your response:
                 
-                🔥 NEXT SIGNAL: [CALL / PUT / NEUTRAL]
+                🔥 NEXT SIGNAL: [State clearly here either CALL / PUT / NEUTRAL]
                 🎯 SIGNAL ACCURACY: [Mention specific %, e.g., 94%]
                 
                 📊 TECHNICAL METRICS:
@@ -70,15 +72,16 @@ with col2:
                 (Give a high-level master tip for this specific trade setup)
                 """
                 
-                model = genai.GenerativeModel('gemini-1.5-flash')
+                # Updated Model Name to fix the 404 Error
+                model = genai.GenerativeModel('gemini-1.5-pro')
                 response = model.generate_content([prompt, image])
                 
                 status_text.success("✅ VIP Analysis Successful!")
                 
-                # Display Results inside a Premium Alert Box
+                # Display Results beautifully
                 st.markdown("---")
                 st.warning("🎯 PREDICTION OUTPUT")
-                st.text_area(label="AI Analysis Report", value=response.text, height=350)
+                st.markdown(response.text)
                 
             except Exception as e:
                 st.error(f"System Error: {str(e)}")
