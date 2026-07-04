@@ -3,7 +3,7 @@ import google.generativeai as genai
 from PIL import Image
 import time
 
-# 1. Page Configuration (VIP Title)
+# 1. Page Configuration
 st.set_page_config(page_title="VIP AI OTC Predictor", page_icon="💎", layout="wide")
 
 # 2. Integrate Your API Key
@@ -11,7 +11,7 @@ API_KEY = "AQ.Ab8RN6Idmj_Y2q2q4u7ryWAYRr2uIyZALe0Qqe9CdfjgJiAxNw"
 genai.configure(api_key=API_KEY)
 
 # Premium Header Section
-st.title("🔱 VIP OTC MARKET SCANNER v3.5")
+st.title("🔱 VIP OTC MARKET SCANNER v4.0")
 st.subheader("🔥 Premium Candlestick Intelligence & Neural Network Analytics")
 st.markdown("---")
 
@@ -72,8 +72,8 @@ with col2:
                 (Give a high-level master tip for this specific trade setup)
                 """
                 
-                # Updated Model Name to fix the 404 Error
-                model = genai.GenerativeModel('gemini-1.5-pro')
+                # Using the universal standard model name to prevent 404 error
+                model = genai.GenerativeModel(model_name='models/gemini-pro-vision')
                 response = model.generate_content([prompt, image])
                 
                 status_text.success("✅ VIP Analysis Successful!")
@@ -84,7 +84,16 @@ with col2:
                 st.markdown(response.text)
                 
             except Exception as e:
-                st.error(f"System Error: {str(e)}")
+                # Fallback model fallback logic if the environment is strictly updated
+                try:
+                    model = genai.GenerativeModel('gemini-1.5-flash-latest')
+                    response = model.generate_content([prompt, image])
+                    status_text.success("✅ VIP Analysis Successful!")
+                    st.markdown("---")
+                    st.warning("🎯 PREDICTION OUTPUT")
+                    st.markdown(response.text)
+                except Exception as ex:
+                    st.error(f"System Error: {str(e)} | Alternate: {str(ex)}")
     else:
         st.warning("⚠️ Please upload a chart screenshot to initiate the VIP AI scanner.")
 
