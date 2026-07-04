@@ -5,15 +5,11 @@ from PIL import Image
 # ১. ড্যাশবোর্ড ও পেজ কনফিগারেশন
 st.set_page_config(page_title="Quotex OTC AI Predictor", page_icon="📊", layout="centered")
 
-st.markdown("""
-    <div style="background-color:#1e293b; padding:20px; border-radius:10px; text-align:center; margin-bottom:25px;">
-        <h1 style="color:#38bdf8; margin:0; font-size:28px;">📊 OTC MARKET SCANNER v1.0</h1>
-        <p style="color:#94a3b8; margin:5px 0 0 0;">AI-Powered Candlestick Analytics</p>
-    </div>
-""", unsafe_allowed_html=True)
+# হেডারের নতুন ও নিরাপদ ফরম্যাট
+st.title("📊 OTC MARKET SCANNER v1.0")
+st.caption("AI-Powered Candlestick Analytics")
 
 # ২. ফ্রি Gemini API Key বসানোর জায়গা
-# (আপাতত এটি এভাবেই থাকবে, পরে আমরা আসল কি বসাবো)
 API_KEY = "YOUR_GEMINI_API_KEY_HERE"
 genai.configure(api_key=API_KEY)
 
@@ -54,7 +50,7 @@ if uploaded_file is not None:
                 st.success("স্ক্যানিং সম্পন্ন হয়েছে!")
                 st.markdown("---")
                 st.subheader("🔮 এআই প্রেডিকশন রেজাল্ট")
-                st.markdown(f"<div style='background-color:#0f172a; padding:15px; border-radius:8px; border-left:5px solid #38bdf8;'>{response.text}</div>", unsafe_allowed_html=True)
+                st.info(response.text)
             
             except Exception as e:
                 st.error(f"ভুল হয়েছে: {e}")
